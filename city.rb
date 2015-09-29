@@ -5,6 +5,7 @@ class City
     @name = name
     @val = val
     @coord = coord
+    @visited = false
   end
 
   def distance_to other
