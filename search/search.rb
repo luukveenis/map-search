@@ -7,6 +7,11 @@ class Search
     @closed = []
   end
 
+  # Super method to be overridden by subclasses for different algorithms
+  def run
+    raise "Algorithm needs to be implemented"
+  end
+
   # Checks if the search is complete (has reached goal state)
   def done? city
     city == @final
