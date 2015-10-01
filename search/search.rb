@@ -20,7 +20,7 @@ class Search
   # Generates fringe nodes for all cities adjacent to the current state.
   # Fringe nodes contains the current city and the path taken to get there.
   def expand state
-    @map.adjacent(state[0]).select { |c| !@closed.include?(c) }.map do |c|
+    @map.adjacent(state[0]).map do |c|
       [c, state[1] + [c]]
     end
   end
