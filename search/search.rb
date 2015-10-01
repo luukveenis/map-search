@@ -1,7 +1,7 @@
 class Search
-  def initialize map
-    @initial = map.cities.sample # pick a random start city
-    @final = map.cities.sample   # pick a random end city
+  def initialize map, initial, final
+    @initial = initial
+    @final = final
     @map = map
     @fringe = []
     @closed = []
