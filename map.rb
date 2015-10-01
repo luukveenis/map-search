@@ -44,7 +44,10 @@ class Map
     matrix = Array.new(26) { Array.new(26, 0) }
     cities.each do |city|
       closest = city.closest_five(cities - [city]).sample(3)
-      closest.each { |c| matrix[city.to_i][c.to_i] = city.distance_to(c) }
+      closest.each do |c|
+        matrix[city.to_i][c.to_i] = city.distance_to(c)
+        matrix[c.to_i][city.to_i] = city.distance_to(c)
+      end
     end
     matrix
   end
