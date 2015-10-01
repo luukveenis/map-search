@@ -5,6 +5,13 @@ class Search
     @map = map
   end
 
+  # Runs all implemented search algorithms and returns an array of results
+  def run_all
+    results = []
+    results << { name: "DFS", result: dfs }
+    results << { name: "BFS", result: bfs }
+  end
+
   # Perform DFS:
   # Returns the computed path if one is found
   # Returns nil if no path is found (can happen for disconnected graph)
