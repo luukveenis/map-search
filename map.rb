@@ -16,6 +16,11 @@ class Map
     Map.new(cities, generate_adjacencies(cities))
   end
 
+  # Returns all cities adjacent to city
+  def adjacent city
+    @cities.select { |c| @adjacency[city.to_i][c.to_i] != 0 }
+  end
+
   def to_s
     @adjacency.map { |r| r = r.map{ |e| e.round.to_s }.join(" ") }.join("\n")
   end
