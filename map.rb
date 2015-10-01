@@ -6,11 +6,13 @@ require './coordinate'
 class Map
   attr_reader :cities, :adjacency
 
+  # Constructor
   def initialize cities, adjacency
     @cities = cities
     @adjacency = adjacency
   end
 
+  # Generates a new random instance of a map
   def self.generate
     cities = generate_cities
     Map.new(cities, generate_adjacencies(cities))
@@ -21,6 +23,7 @@ class Map
     @cities.select { |c| @adjacency[city.to_i][c.to_i] != 0 }
   end
 
+  # Prints the adjacency matrix corresponding to the current instance
   def to_s
     @adjacency.map { |r| r = r.map{ |e| e.round.to_s }.join(" ") }.join("\n")
   end
@@ -45,6 +48,8 @@ class Map
     coords.map { |c| ::Coordinate.new(c[0], c[1]) }
   end
 
+  # Generates adjacencies for cities based on the R2 method
+  # described in the project description
   def self.generate_adjacencies cities
     matrix = Array.new(26) { Array.new(26, 0) }
     cities.each do |city|
