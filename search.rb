@@ -1,4 +1,5 @@
 require_relative 'euclidian'
+require_relative 'zero'
 
 # Class to run the 5 different search algorithms required by this project
 # These algorithms include:
@@ -20,8 +21,10 @@ class Search
     results << { name: "DFS", result: dfs(Float::INFINITY) }
     results << { name: "BFS", result: bfs }
     results << { name: "Iterative DFS", result: iterative_dfs }
-    results << { name: "Greedy", result: greedy(Euclidian.new(@final, false)) }
-    results << { name: "A Star", result: a_star(Euclidian.new(@final, true)) }
+    results << { name: "Greedy Euc.", result: greedy(Euclidian.new(@final, false)) }
+    results << { name: "Greedy Zero", result: greedy(Zero.new(@final, false)) }
+    results << { name: "A Star Euc.", result: a_star(Euclidian.new(@final, true)) }
+    results << { name: "A Star Zero", result: a_star(Zero.new(@final, true)) }
   end
 
   # Perform (depth-limited) DFS:
