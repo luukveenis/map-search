@@ -1,5 +1,12 @@
 require_relative 'euclidian'
 
+# Class to run the 5 different search algorithms required by this project
+# These algorithms include:
+# - DFS
+# - BFS
+# - Iterative Deepening Search
+# - Greedy Search
+# - A* Search
 class Search
   def initialize map, initial, final
     @initial = initial
@@ -58,6 +65,8 @@ class Search
     end
   end
 
+  # Implements iterative deepening search by continuously calling
+  # depth limited search with increasing depths
   def iterative_dfs
     (1..@map.cities.count).each do |i|
       result = dfs(i)
@@ -66,6 +75,7 @@ class Search
     return nil
   end
 
+  # Implements greedy search, choosing nodes to expand based on strategy
   def greedy strategy
     closed = []
     fringe = initialize_fringe
@@ -82,6 +92,7 @@ class Search
     end
   end
 
+  # Implements A* Search, choosing nodes to expand based on strategy
   def a_star strategy
     closed = []
     fringe = initialize_fringe
@@ -105,6 +116,7 @@ class Search
     city == @final
   end
 
+  # Creates the fringe array containing the initial node
   def initialize_fringe
       [{
         city: @initial,
