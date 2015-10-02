@@ -10,6 +10,7 @@ class Search
     results = []
     results << { name: "DFS", result: dfs(Float::INFINITY) }
     results << { name: "BFS", result: bfs }
+    results << { name: "Iterative DFS", result: iterative_dfs }
   end
 
   # Perform (depth-limited) DFS:
@@ -25,7 +26,7 @@ class Search
       current = fringe.pop
       city = current[:city]
       return current if done? city
-      unless closed.include?(city) || current[:depth] == max_depth
+      unless closed.include?(city) || current[:depth] >= max_depth
         closed.push city
         fringe = fringe + expand(current)
       end
@@ -51,6 +52,14 @@ class Search
         end
       end
     end
+  end
+
+  def iterative_dfs
+    (1..@map.cities.count).each do |i|
+      result = dfs(i)
+      return result if result
+    end
+    return nil
   end
 
   # Checks if the search is complete (has reached goal state)
