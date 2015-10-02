@@ -19,7 +19,7 @@ class Search
   # To perform regular DFS simply pass in Float::INFINITY for max_depth
   def dfs max_depth
     closed = []
-    fringe = [{ city: @initial, path: [@initial], depth: 1 }]
+    fringe = initialize_fringe
 
     loop do
       return nil if fringe.empty?
@@ -38,7 +38,7 @@ class Search
   # Returns nil if no path is found (can happen for disconnected path)
   def bfs
     closed = []
-    fringe = [{ city: @initial, path: [@initial], depth: 1 }]
+    fringe = initialize_fringe
 
     loop do
       return nil if fringe.empty?
@@ -67,11 +67,23 @@ class Search
     city == @final
   end
 
+  def initialize_fringe
+      [{
+        city: @initial,
+        path: [@initial],
+        depth: 1
+      }]
+  end
+
   # Generates fringe nodes for all cities adjacent to the current state.
   # Fringe nodes contains the current city and the path taken to get there.
   def expand state
     @map.adjacent(state[:city]).map do |c|
-      { city: c, path: state[:path] + [c], depth: state[:depth] + 1 }
+      {
+        city: c,
+        path: state[:path] + [c],
+        depth: state[:depth] + 1
+      }
     end
   end
 end
