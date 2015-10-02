@@ -90,7 +90,8 @@ class Search
       [{
         city: @initial,
         path: [@initial],
-        depth: 1
+        depth: 1,
+        cost: 0
       }]
   end
 
@@ -101,7 +102,8 @@ class Search
       {
         city: c,
         path: state[:path] + [c],
-        depth: state[:depth] + 1
+        depth: state[:depth] + 1,
+        cost: state[:cost] + state[:city].distance_to(c)
       }
     end
   end
