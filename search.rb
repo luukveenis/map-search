@@ -13,7 +13,8 @@ class Search
     results << { name: "DFS", result: dfs(Float::INFINITY) }
     results << { name: "BFS", result: bfs }
     results << { name: "Iterative DFS", result: iterative_dfs }
-    results << { name: "Greedy", result: greedy(Euclidian.new(@final)) }
+    results << { name: "Greedy", result: greedy(Euclidian.new(@final, false)) }
+    results << { name: "A Star", result: a_star(Euclidian.new(@final, true)) }
   end
 
   # Perform (depth-limited) DFS:
@@ -73,6 +74,24 @@ class Search
       return nil if fringe.empty?
       current = fringe.delete(strategy.next(fringe))
       city = current[:city]
+      return current if done? city
+      unless closed.include? city
+        closed.push city
+        fringe = fringe + expand(current)
+      end
+    end
+  end
+
+  def a_star strategy
+    closed = []
+    fringe = initialize_fringe
+
+    loop do
+      return nil if fringe.empty?
+
+      current = fringe.delete(strategy.next(fringe))
+      city = current[:city]
+
       return current if done? city
       unless closed.include? city
         closed.push city
