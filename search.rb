@@ -8,14 +8,15 @@ class Search
   # Runs all implemented search algorithms and returns an array of results
   def run_all
     results = []
-    results << { name: "DFS", result: dfs }
+    results << { name: "DFS", result: dfs(Float::INFINITY) }
     results << { name: "BFS", result: bfs }
   end
 
-  # Perform DFS:
+  # Perform (depth-limited) DFS:
   # Returns the computed path if one is found
   # Returns nil if no path is found (can happen for disconnected graph)
-  def dfs
+  # To perform regular DFS simply pass in Float::INFINITY for max_depth
+  def dfs max_depth
     closed = []
     fringe = [{ city: @initial, path: [@initial], depth: 1 }]
 
@@ -24,7 +25,7 @@ class Search
       current = fringe.pop
       city = current[:city]
       return current if done? city
-      unless closed.include? city
+      unless closed.include?(city) || current[:depth] == max_depth
         closed.push city
         fringe = fringe + expand(current)
       end
