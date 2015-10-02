@@ -17,13 +17,13 @@ class Search
   # Returns nil if no path is found (can happen for disconnected graph)
   def dfs
     closed = []
-    fringe = [[@initial, [@initial]]]
+    fringe = [{ city: @initial, path: [@initial], depth: 1 }]
 
     loop do
       return nil if fringe.empty?
       current = fringe.pop
-      city = current[0]
-      return current[1] if done? city
+      city = current[:city]
+      return current if done? city
       unless closed.include? city
         closed.push city
         fringe = fringe + expand(current)
@@ -36,13 +36,13 @@ class Search
   # Returns nil if no path is found (can happen for disconnected path)
   def bfs
     closed = []
-    fringe = [[@initial, [@initial]]]
+    fringe = [{ city: @initial, path: [@initial], depth: 1 }]
 
     loop do
       return nil if fringe.empty?
       current = fringe.pop
-      city = current[0]
-      return current[1] if done? city
+      city = current[:city]
+      return current if done? city
       unless closed.include? city
         closed.push city
         expand(current).each do |c|
@@ -60,8 +60,8 @@ class Search
   # Generates fringe nodes for all cities adjacent to the current state.
   # Fringe nodes contains the current city and the path taken to get there.
   def expand state
-    @map.adjacent(state[0]).map do |c|
-      [c, state[1] + [c]]
+    @map.adjacent(state[:city]).map do |c|
+      { city: c, path: state[:path] + [c], depth: state[:depth] + 1 }
     end
   end
 end
