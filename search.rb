@@ -1,3 +1,5 @@
+require_relative 'euclidian'
+
 class Search
   def initialize map, initial, final
     @initial = initial
@@ -11,6 +13,7 @@ class Search
     results << { name: "DFS", result: dfs(Float::INFINITY) }
     results << { name: "BFS", result: bfs }
     results << { name: "Iterative DFS", result: iterative_dfs }
+    results << { name: "Greedy", result: greedy(Euclidian.new(@final)) }
   end
 
   # Perform (depth-limited) DFS:
@@ -60,6 +63,22 @@ class Search
       return result if result
     end
     return nil
+  end
+
+  def greedy strategy
+    closed = []
+    fringe = initialize_fringe
+
+    loop do
+      return nil if fringe.empty?
+      current = fringe.delete(strategy.next(fringe))
+      city = current[:city]
+      return current if done? city
+      unless closed.include? city
+        closed.push city
+        fringe = fringe + expand(current)
+      end
+    end
   end
 
   # Checks if the search is complete (has reached goal state)
