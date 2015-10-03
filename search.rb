@@ -36,13 +36,13 @@ class Search
     fringe = initialize_fringe
 
     loop do
-      return nil if fringe.empty?
+      return nil if fringe.empty? # No solution
       current = fringe.pop
       city = current[:city]
-      return current if done? city
-      unless closed.include?(city)
+      return current if done? city # Found the solution?
+      unless closed.include?(city) # Expand if we have not visited the city
         closed.push city
-        fringe = fringe + expand(current)
+        fringe = fringe + expand(current) # Add to end for FILO
       end
     end
   end
@@ -55,14 +55,14 @@ class Search
     fringe = initialize_fringe
 
     loop do
-      return nil if fringe.empty?
+      return nil if fringe.empty? # No solution
       current = fringe.pop
       city = current[:city]
-      return current if done? city
-      unless closed.include? city
+      return current if done? city # Found the solution?
+      unless closed.include? city  # Expand if we haven't visited the city
         closed.push city
         expand(current).each do |c|
-          fringe.unshift(c)
+          fringe.unshift(c) # Add to front to ensure FIFO
         end
       end
     end
@@ -71,8 +71,7 @@ class Search
   # Implements iterative deepening search by continuously calling
   # depth limited search with increasing depths
   def iterative_dfs
-    # (1..@map.cities.count).each do |i|
-    (1..10).each do |i|
+    (1..@map.cities.count).each do |i| # Path can't be longer than # cities
       result = dls(i)
       return result if result
     end
@@ -83,11 +82,11 @@ class Search
     fringe = initialize_fringe
 
     loop do
-      return nil if fringe.empty?
+      return nil if fringe.empty? # No solution
       current = fringe.pop
       city = current[:city]
-      return current if done? city
-      unless current[:depth] >= max
+      return current if done? city  # Found solution?
+      unless current[:depth] >= max # Stop if we've reached max depth
         fringe = fringe + expand(current)
       end
     end
@@ -99,11 +98,11 @@ class Search
     fringe = initialize_fringe
 
     loop do
-      return nil if fringe.empty?
-      current = fringe.delete(strategy.next(fringe))
+      return nil if fringe.empty? # No solution
+      current = fringe.delete(strategy.next(fringe)) # Pick next using heuristic
       city = current[:city]
-      return current if done? city
-      unless closed.include? city
+      return current if done? city # Found solution?
+      unless closed.include? city  # Only expand new cities
         closed.push city
         fringe = fringe + expand(current)
       end
@@ -116,13 +115,13 @@ class Search
     fringe = initialize_fringe
 
     loop do
-      return nil if fringe.empty?
+      return nil if fringe.empty? # No solution
 
-      current = fringe.delete(strategy.next(fringe))
+      current = fringe.delete(strategy.next(fringe)) # Pick next using heuristic
       city = current[:city]
 
-      return current if done? city
-      unless closed.include? city
+      return current if done? city # Found solution?
+      unless closed.include? city  # Only expand new cities
         closed.push city
         fringe = fringe + expand(current)
       end
