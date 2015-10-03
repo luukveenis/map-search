@@ -18,7 +18,7 @@ class Search
   # Runs all implemented search algorithms and returns an array of results
   def run_all
     results = []
-    results << { name: "DFS", result: dfs(Float::INFINITY) }
+    results << { name: "DFS", result: dfs }
     results << { name: "BFS", result: bfs }
     results << { name: "Iterative DFS", result: iterative_dfs }
     results << { name: "Greedy Euc.", result: greedy(Euclidian.new(@final, false)) }
@@ -31,7 +31,7 @@ class Search
   # Returns the computed path if one is found
   # Returns nil if no path is found (can happen for disconnected graph)
   # To perform regular DFS simply pass in Float::INFINITY for max_depth
-  def dfs max_depth
+  def dfs
     closed = []
     fringe = initialize_fringe
 
@@ -40,7 +40,7 @@ class Search
       current = fringe.pop
       city = current[:city]
       return current if done? city
-      unless closed.include?(city) || current[:depth] >= max_depth
+      unless closed.include?(city)
         closed.push city
         fringe = fringe + expand(current)
       end
@@ -71,11 +71,26 @@ class Search
   # Implements iterative deepening search by continuously calling
   # depth limited search with increasing depths
   def iterative_dfs
-    (1..@map.cities.count).each do |i|
-      result = dfs(i)
+    # (1..@map.cities.count).each do |i|
+    (1..10).each do |i|
+      result = dls(i)
       return result if result
     end
     return nil
+  end
+
+  def dls max
+    fringe = initialize_fringe
+
+    loop do
+      return nil if fringe.empty?
+      current = fringe.pop
+      city = current[:city]
+      return current if done? city
+      unless current[:depth] >= max
+        fringe = fringe + expand(current)
+      end
+    end
   end
 
   # Implements greedy search, choosing nodes to expand based on strategy
